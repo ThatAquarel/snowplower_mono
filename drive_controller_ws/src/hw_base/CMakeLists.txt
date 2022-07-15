@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
 )
 find_package(Boost REQUIRED COMPONENTS chrono)
+# find_package(CppLinuxSerial REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -118,7 +119,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES horizon_legacy
   CATKIN_DEPENDS hardware_interface roscpp sensor_msgs
-  DEPENDS Boost
+  DEPENDS Boost CppLinuxSerial
 )
 
 ###########
@@ -129,6 +130,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  /usr/local/include/CppLinuxSerial
   ${Boost_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
 )
@@ -136,7 +138,7 @@ include_directories(
 add_executable(hw_node
   src/hw_base.cpp
   src/hw_hardware.cpp)
-target_link_libraries(hw_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(hw_node ${catkin_LIBRARIES} ${Boost_LIBRARIES} /usr/local/lib/libCppLinuxSerial.a)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

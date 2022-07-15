@@ -1,37 +1,41 @@
 /**
-*
-*  \author     Paul Bovbel <pbovbel@clearpathrobotics.com>
-*  \copyright  Copyright (c) 2014-2015, Clearpath Robotics, Inc.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are met:
-*     * Redistributions of source code must retain the above copyright
-*       notice, this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above copyright
-*       notice, this list of conditions and the following disclaimer in the
-*       documentation and/or other materials provided with the distribution.
-*     * Neither the name of Clearpath Robotics, Inc. nor the
-*       names of its contributors may be used to endorse or promote products
-*       derived from this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL CLEARPATH ROBOTICS, INC. BE LIABLE FOR ANY
-* DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* Please send comments, questions, or patches to code@clearpathrobotics.com
-*
-*/
+ *
+ *  \author     Paul Bovbel <pbovbel@clearpathrobotics.com>
+ *  \copyright  Copyright (c) 2014-2015, Clearpath Robotics, Inc.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Clearpath Robotics, Inc. nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL CLEARPATH ROBOTICS, INC. BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Please send comments, questions, or patches to code@clearpathrobotics.com
+ *
+ */
 
 #include "hw_base/hw_hardware.h"
 #include <boost/assign/list_of.hpp>
 #include <iostream>
+#include <sstream>
+#include <CppLinuxSerial/SerialPort.hpp>
+
+using namespace mn::CppLinuxSerial;
 
 namespace
 {
@@ -42,16 +46,15 @@ namespace hw_base
 {
 
   /**
-  * Initialize Hw hardware
-  */
+   * Initialize Hw hardware
+   */
   HwHardware::HwHardware(ros::NodeHandle nh, ros::NodeHandle private_nh, double target_control_freq)
-    :
-    nh_(nh),
-    private_nh_(private_nh)
-    // system_status_task_(hw_status_msg_),
-    // power_status_task_(hw_status_msg_),
-    // safety_status_task_(hw_status_msg_),
-    // software_status_task_(hw_status_msg_, target_control_freq)
+      : nh_(nh),
+        private_nh_(private_nh)
+  // system_status_task_(hw_status_msg_),
+  // power_status_task_(hw_status_msg_),
+  // safety_status_task_(hw_status_msg_),
+  // software_status_task_(hw_status_msg_, target_control_freq)
   {
     private_nh_.param<double>("wheel_diameter", wheel_diameter_, 0.3302);
     private_nh_.param<double>("max_accel", max_accel_, 5.0);
@@ -60,6 +63,12 @@ namespace hw_base
 
     std::string port;
     private_nh_.param<std::string>("port", port, "/dev/prolific");
+    
+    serialPort = new SerialPort("/dev/ttyUSB0", BaudRate::B_115200, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
+    serialPort->SetTimeout(-1); // Block when reading until any data is received
+    serialPort->Open();
+
+    serialPort->Write("1,0,255,1,0,255");
 
     // horizon_legacy::connect(port);
     // horizon_legacy::configureLimits(max_speed_, max_accel_);
@@ -67,9 +76,15 @@ namespace hw_base
     registerControlInterfaces();
   }
 
+  HwHardware::~HwHardware()
+  {
+    serialPort->Close();
+    delete serialPort;
+  }
+
   /**
-  * Get current encoder travel offsets from MCU and bias future encoder readings against them
-  */
+   * Get current encoder travel offsets from MCU and bias future encoder readings against them
+   */
   void HwHardware::resetTravelOffset()
   {
     // horizon_legacy::Channel<clearpath::DataEncoders>::Ptr enc = horizon_legacy::Channel<clearpath::DataEncoders>::requestData(
@@ -87,14 +102,12 @@ namespace hw_base
     // }
   }
 
-
   /**
-  * Register interfaces with the RobotHW interface manager, allowing ros_control operation
-  */
+   * Register interfaces with the RobotHW interface manager, allowing ros_control operation
+   */
   void HwHardware::registerControlInterfaces()
   {
-    ros::V_string joint_names = boost::assign::list_of("front_left_wheel")
-      ("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
+    ros::V_string joint_names = boost::assign::list_of("front_left_wheel")("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
     for (unsigned int i = 0; i < joint_names.size(); i++)
     {
       hardware_interface::JointStateHandle joint_state_handle(joint_names[i],
@@ -103,7 +116,7 @@ namespace hw_base
       joint_state_interface_.registerHandle(joint_state_handle);
 
       hardware_interface::JointHandle joint_handle(
-        joint_state_handle, &joints_[i].velocity_command);
+          joint_state_handle, &joints_[i].velocity_command);
       velocity_joint_interface_.registerHandle(joint_handle);
     }
     registerInterface(&joint_state_interface_);
@@ -111,8 +124,8 @@ namespace hw_base
   }
 
   /**
-  * Pull latest speed and travel measurements from MCU, and store in joint structure for ros_control
-  */
+   * Pull latest speed and travel measurements from MCU, and store in joint structure for ros_control
+   */
   void HwHardware::updateJointsFromHardware()
   {
 
@@ -159,8 +172,8 @@ namespace hw_base
   }
 
   /**
-  * Get latest velocity commands from ros_control via joint structure, and send to MCU
-  */
+   * Get latest velocity commands from ros_control via joint structure, and send to MCU
+   */
   void HwHardware::writeCommandsToHardware()
   {
     // double diff_speed_left = angularToLinear(joints_[LEFT].velocity_command);
@@ -174,19 +187,45 @@ namespace hw_base
     std::cout << "velocity_command " << joints_[LEFT].velocity_command << " " << joints_[RIGHT].velocity_command << " ";
     std::cout << "velocity " << joints_[LEFT].velocity << " " << joints_[RIGHT].velocity << " ";
     std::cout << std::endl;
+
+    float a = joints_[LEFT].velocity_command;
+    float b = joints_[RIGHT].velocity_command;
+
+    int vf, vr;
+    vf = std::abs(static_cast<int>(a / 3.1415926 * 255));
+    vr = std::abs(static_cast<int>(b / 3.1415926 * 255));
+
+    std::ostringstream ss;
+
+    if (a > 0) {
+        ss << "1,0,";
+    } else {
+        ss << "0,1,";
+    }
+    ss << vf;
+    ss << ",";
+
+    if (b > 0) {
+        ss << "1,0,";
+    } else {
+        ss << "0,1,";
+    }
+    ss << vr;
+  
+    serialPort->Write(ss.str());
   }
 
   /**
-  * Update diagnostics with control loop timing information
-  */
+   * Update diagnostics with control loop timing information
+   */
   void HwHardware::reportLoopDuration(const ros::Duration &duration)
   {
     // software_status_task_.updateControlFrequency(1 / duration.toSec());
   }
 
   /**
-  * Scale left and right speed outputs to maintain ros_control's desired trajectory without saturating the outputs
-  */
+   * Scale left and right speed outputs to maintain ros_control's desired trajectory without saturating the outputs
+   */
   void HwHardware::limitDifferentialSpeed(double &diff_speed_left, double &diff_speed_right)
   {
     double large_speed = std::max(std::abs(diff_speed_left), std::abs(diff_speed_right));
@@ -199,20 +238,19 @@ namespace hw_base
   }
 
   /**
-  * Hw reports travel in metres, need radians for ros_control RobotHW
-  */
+   * Hw reports travel in metres, need radians for ros_control RobotHW
+   */
   double HwHardware::linearToAngular(const double &travel) const
   {
     return travel / wheel_diameter_ * 2;
   }
 
   /**
-  * RobotHW provides velocity command in rad/s, Hw needs m/s,
-  */
+   * RobotHW provides velocity command in rad/s, Hw needs m/s,
+   */
   double HwHardware::angularToLinear(const double &angle) const
   {
     return angle * wheel_diameter_ / 2;
   }
 
-
-}  // namespace hw_base
+} // namespace hw_base

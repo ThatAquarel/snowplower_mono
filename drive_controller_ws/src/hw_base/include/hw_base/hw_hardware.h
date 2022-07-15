@@ -39,8 +39,12 @@
 #include "hardware_interface/robot_hw.h"
 #include "ros/ros.h"
 #include "sensor_msgs/JointState.h"
+#include <CppLinuxSerial/SerialPort.hpp>
+
 // #include "hw_msgs/HwStatus.h"
 #include <string>
+
+using namespace mn::CppLinuxSerial;
 
 namespace hw_base
 {
@@ -53,6 +57,7 @@ namespace hw_base
   {
   public:
     HwHardware(ros::NodeHandle nh, ros::NodeHandle private_nh, double target_control_freq);
+    ~HwHardware();
 
     void updateJointsFromHardware();
 
@@ -73,6 +78,8 @@ namespace hw_base
     void limitDifferentialSpeed(double &travel_speed_left, double &travel_speed_right);
 
     ros::NodeHandle nh_, private_nh_;
+
+    SerialPort* serialPort;
 
     // ROS Control interfaces
     hardware_interface::JointStateInterface joint_state_interface_;
