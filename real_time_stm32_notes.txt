@@ -1,0 +1,63 @@
+- odom / base_controller
+    dep
+    X ros serial comm
+        http://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup
+        http://wiki.ros.org/rosserial
+
+        http://wiki.ros.org/rosserial_python
+        rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=57600
+
+    X stm32 arduino build
+        https://create.arduino.cc/projecthub/akarsh98/using-a-stm32-like-an-arduino-tutorial-stm32f103c8-1073cb
+
+        board 	 generic stm32f103r series
+        variant  stm32f103rc (48k ram, 256k flash)
+        upload 	 method serial
+        cpu freq 72 mhz
+        optimize smallest (default)
+        file:///home/tianyi/Downloads/stm32f103rc.pdf
+
+    X stm32 serial comm
+        Arduino/libraries/ros_lib/ArduinoHardware.h
+        //  #include <HardwareSerial.h>  // Arduino AVR
+ 		//  #define SERIAL_CLASS HardwareSerial
+
+- odom
+    dep
+    X motor odom sensors pins
+    	MA1 pb6
+    	MB1 pb7
+    	MA2 pa0
+    	MB2 pa1
+
+    	https://pdf1.alldatasheet.com/datasheet-pdf/view/807693/TOSHIBA/TB6612FNG.html
+    	https://docs.google.com/presentation/d/1ZFdg7UQH9Lxz_D5cFgZBfR0sunQVle29SP4dGFANSy8/edit#slide=id.p
+
+    Xstm32 interrupts
+
+- differential drive modules
+	X diff drive parameters
+		http://wiki.ros.org/diff_drive_controller
+		left_wheel
+		right_wheel
+		-> joint names
+
+	hardware interface
+		sudo apt install ros-noetic-ros-control
+		sudo apt-get install ros-noetic-effort-controllers
+ 		sudo apt-get install ros-noetic-joint-state-controller
+
+    dummy cmd_vel
+        http://wiki.ros.org/teleop_twist_keyboard
+        rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+
+    hardware bootup
+        roslaunch hw_base base.launch
+
+    write actual read/write methods
+
+
+- nav
+    http://wiki.ros.org/navigation/Tutorials/RobotSetup
+
+    URDF definitions
