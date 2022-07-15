@@ -33,7 +33,7 @@
 #define HW_BASE_HW_HARDWARE_H
 
 // #include "hw_base/hw_diagnostics.h"
-#include "diagnostic_updater/diagnostic_updater.h"
+// #include "diagnostic_updater/diagnostic_updater.h"
 #include "hardware_interface/joint_state_interface.h"
 #include "hardware_interface/joint_command_interface.h"
 #include "hardware_interface/robot_hw.h"
