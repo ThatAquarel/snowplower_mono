@@ -118,7 +118,7 @@ find_package(Boost REQUIRED COMPONENTS chrono)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES horizon_legacy
-  CATKIN_DEPENDS hardware_interface roscpp sensor_msgs
+  CATKIN_DEPENDS controller_manager hardware_interface roscpp sensor_msgs
   DEPENDS Boost CppLinuxSerial
 )
 

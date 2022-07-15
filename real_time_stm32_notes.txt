@@ -54,7 +54,8 @@
     hardware bootup
         roslaunch hw_base base.launch
 
-    write actual read/write methods
+    write method
+        compile and install https://github.com/gbmhunter/CppLinuxSerial
 
 
 - nav
