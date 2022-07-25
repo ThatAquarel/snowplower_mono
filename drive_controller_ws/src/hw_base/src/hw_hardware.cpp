@@ -176,17 +176,10 @@ namespace hw_base
    */
   void HwHardware::writeCommandsToHardware()
   {
-    // double diff_speed_left = angularToLinear(joints_[LEFT].velocity_command);
-    // double diff_speed_right = angularToLinear(joints_[RIGHT].velocity_command);
-
-    // limitDifferentialSpeed(diff_speed_left, diff_speed_right);
-
-    // horizon_legacy::controlSpeed(diff_speed_left, diff_speed_right, max_accel_, max_accel_);
-
-    std::cout << "HwHardware::writeCommandsToHardware ";
-    std::cout << "velocity_command " << joints_[LEFT].velocity_command << " " << joints_[RIGHT].velocity_command << " ";
-    std::cout << "velocity " << joints_[LEFT].velocity << " " << joints_[RIGHT].velocity << " ";
-    std::cout << std::endl;
+    // std::cout << "HwHardware::writeCommandsToHardware ";
+    // std::cout << "velocity_command " << joints_[LEFT].velocity_command << " " << joints_[RIGHT].velocity_command << " ";
+    // std::cout << "velocity " << joints_[LEFT].velocity << " " << joints_[RIGHT].velocity << " ";
+    // std::cout << std::endl;
 
     float a = joints_[LEFT].velocity_command;
     float b = joints_[RIGHT].velocity_command;

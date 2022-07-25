@@ -57,6 +57,9 @@
     write method
         compile and install https://github.com/gbmhunter/CppLinuxSerial
 
+    serial communications
+        adv_serial_test
+        serial_comm_test/main_adv.cpp
 
 - nav
     http://wiki.ros.org/navigation/Tutorials/RobotSetup
