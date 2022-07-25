@@ -9,9 +9,6 @@ using namespace mn::CppLinuxSerial;
 
 SerialPort serialPort("/dev/ttyUSB0", BaudRate::B_230400, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
 
-//std::vector<uint8_t> r_buffer;
-//std::vector<uint8_t> w_buffer;
-
 #define BUF_SIZE 32
 #define FRAME_START_FLAG 0x7E
 #define FRAME_END_FLAG 0x7D
