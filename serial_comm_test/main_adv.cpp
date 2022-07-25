@@ -168,11 +168,10 @@ int main() {
 	while (1) {
 		send_recv_command(CTRL, proto, 6);
 		send_recv_command(ODOM, nullptr, 0);
-		
-		int m0, m1;
-		std::memcpy((uint8_t*)&m0, data_packet->buf + 0, 4);
-		std::memcpy((uint8_t*)&m1, data_packet->buf + 4, 4);
 
-		std::cout << m0 << " " << m1 << std::endl;
+		int pulses[2];
+		std::memcpy((uint8_t*)pulses, data_packet->buf, 8);
+
+		std::cout << pulses[0] << " " << pulses[1] << std::endl;
 	}	
 }
