@@ -61,6 +61,15 @@
         adv_serial_test
         serial_comm_test/main_adv.cpp
 
+        put board on prog mode,
+        click reset,
+        upload slam_rpi_shield_odom
+
+    rviz
+        global map -> odom
+        add odometry in bottom left corner
+
+
 - nav
     http://wiki.ros.org/navigation/Tutorials/RobotSetup
 

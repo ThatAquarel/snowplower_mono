@@ -1,0 +1,36 @@
+- rtk preliminary tests
+	https://learn.sparkfun.com/tutorials/gps-rtk-hookup-guide/all#connecting-the-gps-rtk-to-a-correction-source
+
+	RTKNAVI
+	I - Base Station
+	Type	TCP Client
+	Opt
+		Server Address	142.41.245.88
+		Port			2106
+	Format	RTCM 3
+
+	L - Base Station
+	Type	Serial
+	Opt
+		Port	COMX
+		Bitrate 38400
+		Byte S	8 bits
+		Parity	None
+		Stop B	1 bit
+		Flow	None
+
+	Setup FTDI chip hardware
+	Connect ucenter, get solutions
+
+- rtk localization node with ROS
+	need
+	
+	odometry
+	linear angular velocity
+	gps data
+
+
+- move base node
+	https://answers.ros.org/question/202117/integrate-a-gps-sensor-with-robot_localization-and-use-move_base-node/	
+	https://answers.ros.org/question/12663/gps-navigation/#:~:text=The%20ROS%20navigation%20stack%20provides,the%20odometry%20required%20for%20navigation.
+
