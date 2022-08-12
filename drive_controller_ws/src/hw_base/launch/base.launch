@@ -24,8 +24,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <launch>
-    <!-- <arg name="port" default="$(optenv HUSKY_PORT /dev/prolific)" /> -->
-
     <!-- Husky harware driver -->
     <node pkg="hw_base" type="hw_node" name="hw_node" output="screen">
         <rosparam subst_value="true">
@@ -43,13 +41,4 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- Differential controller parameters and basic localization -->
     <include file="$(find hw_control)/launch/control.launch" />
-
-    <!--Teleop -->
-    <!-- <include file="$(find husky_control)/launch/teleop.launch" /> -->
-
-    <!-- Diagnostic Aggregator -->
-    <!-- <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator">
-        <rosparam command="load" file="$(find husky_base)/config/diagnostics.yaml"/>
-    </node> -->
-
 </launch>
