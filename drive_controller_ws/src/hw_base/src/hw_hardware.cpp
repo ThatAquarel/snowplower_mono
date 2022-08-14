@@ -225,8 +225,8 @@ namespace hw_base
     private_nh_.param<double>("max_speed", max_speed_, 1.0);
     private_nh_.param<double>("polling_timeout_", polling_timeout_, 10.0);
 
-    std::string port;
-    private_nh_.param<std::string>("port", port, "/dev/prolific");
+    // std::string port;
+    // private_nh_.param<std::string>("port", port, "/dev/prolific");
 
     // serialPort = new SerialPort("/dev/ttyUSB0", BaudRate::B_115200, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
     // serialPort->SetTimeout(-1); // Block when reading until any data is received
@@ -273,7 +273,8 @@ namespace hw_base
    */
   void HwHardware::registerControlInterfaces()
   {
-    ros::V_string joint_names = boost::assign::list_of("front_left_wheel")("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
+    // ros::V_string joint_names = boost::assign::list_of("front_left_wheel")("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
+    ros::V_string joint_names = boost::assign::list_of("left_wheel")("right_wheel");
     for (unsigned int i = 0; i < joint_names.size(); i++)
     {
       hardware_interface::JointStateHandle joint_state_handle(joint_names[i],

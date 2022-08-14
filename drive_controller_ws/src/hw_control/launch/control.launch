@@ -15,4 +15,6 @@
     <rosparam command="load" file="$(find hw_control)/config/twist_mux.yaml" />
     <remap from="cmd_vel_out" to="hw_velocity_controller/cmd_vel"/>
   </node>
+
+  <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find hw_control)/rviz/show_tf.rviz" /> -->
 </launch>
