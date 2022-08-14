@@ -41,13 +41,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <!-- <xacro:property name="wheelbase" value="0.5120" />
   <xacro:property name="track" value="0.5708" />
   <xacro:property name="wheel_vertical_offset" value="0.03282" /> -->
-  <xacro:property name="wheelbase" value="0.5120" />
-  <xacro:property name="track" value="0.1940" />
+  <xacro:property name="track" value="0.1940" /> 
   <xacro:property name="wheel_vertical_offset" value="0.00000" />
 
   <!-- Wheel Properties -->
   <xacro:property name="wheel_length" value="0.0400" />
-  <xacro:property name="wheel_radius" value="0.0470" />
+  <xacro:property name="wheel_radius" value="0.0235" />
 
   <!-- Base link is the center of the robot's bottom plate -->
   <link name="base_link">
