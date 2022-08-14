@@ -42,7 +42,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <xacro:property name="track" value="0.5708" />
   <xacro:property name="wheel_vertical_offset" value="0.03282" /> -->
   <xacro:property name="wheelbase" value="0.5120" />
-  <xacro:property name="track" value="0.1500" />
+  <xacro:property name="track" value="0.1940" />
   <xacro:property name="wheel_vertical_offset" value="0.00000" />
 
   <!-- Wheel Properties -->
@@ -52,39 +52,26 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <!-- Base link is the center of the robot's bottom plate -->
   <link name="base_link">
     <collision>
-      <origin xyz="0 0 ${base_z_size*3/4-0.01}" rpy="0 0 0" />
+      <!-- <origin xyz="0 0 ${base_z_size*3/4-0.01}" rpy="0 0 0" /> -->
+      <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <box size="${base_x_size*4/5} ${base_y_size} ${base_z_size/2-0.02}"/>
+        <box size="${base_x_size} ${base_y_size} ${base_z_size}"/>
       </geometry>
     </collision>
   </link>
 
   <!-- Base footprint is on the ground under the robot -->
   <link name="base_footprint"/>
-
   <joint name="base_footprint_joint" type="fixed">
-    <origin xyz="0 0 ${wheel_vertical_offset - wheel_radius}" rpy="0 0 0" />
+	  <origin xyz="0 0 ${-base_z_size/2}" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="base_footprint" />
   </joint>
 
-  <!-- Husky wheel macros -->
-  <!-- <xacro:husky_wheel wheel_prefix="front_left">
-    <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-  </xacro:husky_wheel>
-  <xacro:husky_wheel wheel_prefix="front_right">
-    <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-  </xacro:husky_wheel>
-  <xacro:husky_wheel wheel_prefix="rear_left">
-    <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-  </xacro:husky_wheel>
-  <xacro:husky_wheel wheel_prefix="rear_right">
-    <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-  </xacro:husky_wheel> -->
   <xacro:husky_wheel wheel_prefix="left">
-    <origin xyz="0 ${track/2} 0" rpy="0 0 0" />
+	  <origin xyz="0 ${track/2} ${-base_z_size/2 + wheel_radius}" rpy="0 0 0" />
   </xacro:husky_wheel>
   <xacro:husky_wheel wheel_prefix="right">
-    <origin xyz="0 ${-track/2} 0" rpy="0 0 0" />
+	  <origin xyz="0 ${-track/2} ${-base_z_size/2 + wheel_radius}" rpy="0 0 0" />
   </xacro:husky_wheel>
 </robot>

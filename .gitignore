@@ -2,3 +2,4 @@ svo_ws/
 drive_controller_ws/devel/
 drive_controller_ws/build/
 serial_comm_test/CppLinuxSerial
+**/*.swp
