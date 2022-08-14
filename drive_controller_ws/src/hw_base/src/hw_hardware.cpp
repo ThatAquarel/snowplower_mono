@@ -377,17 +377,17 @@ namespace hw_base
   /**
    * Hw reports travel in metres, need radians for ros_control RobotHW
    */
-  double HwHardware::linearToAngular(const double &travel) const
-  {
-    return travel / wheel_diameter_ * 2;
-  }
+  // double HwHardware::linearToAngular(const double &travel) const
+  // {
+  //   return travel / wheel_diameter_ * 2;
+  // }
 
   /**
    * RobotHW provides velocity command in rad/s, Hw needs m/s,
    */
-  double HwHardware::angularToLinear(const double &angle) const
-  {
-    return angle * wheel_diameter_ / 2;
-  }
+  // double HwHardware::angularToLinear(const double &angle) const
+  // {
+  //   return angle * wheel_diameter_ / 2;
+  // }
 
 } // namespace hw_base
