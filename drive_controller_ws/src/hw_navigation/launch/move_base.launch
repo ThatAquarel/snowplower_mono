@@ -1,4 +1,3 @@
- <arg name="no_static_map" default="false"/>
 <?xml version="1.0"?>
 <!--
 Software License Agreement (BSD)
@@ -29,8 +28,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
   <arg name="no_static_map" default="false"/>
 
   <arg name="base_global_planner" default="navfn/NavfnROS"/>
-  <arg name="base_local_planner" default="dwa_local_planner/DWAPlannerROS"/>
-  <!-- <arg name="base_local_planner" default="base_local_planner/TrajectoryPlannerROS"/> -->
+  <!-- <arg name="base_local_planner" default="dwa_local_planner/DWAPlannerROS"/> -->
+  <arg name="base_local_planner" default="base_local_planner/TrajectoryPlannerROS"/>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 
@@ -44,11 +43,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 
     <!-- local costmap, needs size -->
     <rosparam file="$(find hw_navigation)/config/costmap_local.yaml" command="load" ns="local_costmap" />
-    <param name="local_costmap/width" value="10.0"/>
-    <param name="local_costmap/height" value="10.0"/>
+    <rosparam file="$(find hw_navigation)/config/costmap_global_static.yaml" command="load" ns="global_costmap" />
 
-    <!-- static global costmap, static map provides size -->
-    <rosparam file="$(find hw_navigation)/config/costmap_global_static.yaml" command="load" ns="global_costmap" unless="$(arg no_static_map)"/>
   </node>
 
 </launch>

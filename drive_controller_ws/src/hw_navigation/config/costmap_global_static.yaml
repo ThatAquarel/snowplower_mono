@@ -1,7 +1,7 @@
-global_frame: map
-rolling_window: false
-track_unknown_space: true
+global_frame: odom 
+robot_base_frame: base_link
+#static_map: false
 
 plugins:
-  - {name: static,                  type: "costmap_2d::StaticLayer"}
-  - {name: inflation,               type: "costmap_2d::InflationLayer"}
+  - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+  - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
