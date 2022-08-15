@@ -11,6 +11,8 @@
   <node name="base_controller_spawner" pkg="controller_manager" type="spawner"
         args="hw_joint_publisher hw_velocity_controller"/>
 
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
   <node pkg="twist_mux" type="twist_mux" name="twist_mux">
     <rosparam command="load" file="$(find hw_control)/config/twist_mux.yaml" />
     <remap from="cmd_vel_out" to="hw_velocity_controller/cmd_vel"/>
