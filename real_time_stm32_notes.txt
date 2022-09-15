@@ -69,6 +69,13 @@
         global map -> odom
         add odometry in bottom left corner
 
+        RobotModel -> shows URDF model of robot in Rviz
+        needs robot_state_publisher node in order for URDF definitions to work
+        sudo apt install ros-noetic-robot-state-publisher
+
+        launch rviz
+        . network_ctrl.sh
+        rviz -d /home/tianyi/snowplower_mono/drive_controller_ws/src/hw_control/rviz/show_tf.rviz
 
 - nav
     http://wiki.ros.org/navigation/Tutorials/RobotSetup
