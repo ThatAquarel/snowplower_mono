@@ -4,3 +4,4 @@ drive_controller_ws/build/
 drive_controller_ws/install/
 serial_comm_test/CppLinuxSerial
 **/*.swp
+*.exe
