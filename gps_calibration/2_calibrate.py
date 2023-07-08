@@ -36,7 +36,7 @@ def main():
     points = np.dot(points, TRANSFORM)
     print(points)
 
-    df.LATITUDE, df.LONGITUDE = points[:, 0:2].T / 10**7
+    df.LATITUDE, df.LONGITUDE = np.transpose(points[:, 0:2]) / 10**7
 
     out = "QGC WPL 110\n" + df.to_csv(
         sep="\t", header=False, index=False, lineterminator="\n"
