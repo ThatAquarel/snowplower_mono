@@ -7,7 +7,7 @@ TRANSFORM = [
     [36560569.15538452, 68609024.83707082, 1.0],
 ]
 
-SOURCE = "test_rev.waypoints"
+SOURCE = "full.waypoints"
 
 SOURCE_COLS = {
     "INDEX": int,
