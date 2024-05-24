@@ -6,6 +6,9 @@ La tarière et le devant de la souffleuse à neige sont démontables pour l'ét�
 
 ## Démonstration vidéo
 
+- À 0min 0s : Déneigement
+- À 1min 3s : Tonte de gazon
+
 [![Démonstration vidéo](https://img.youtube.com/vi/0R1GHBPF30c/maxresdefault.jpg)](https://youtu.be/0R1GHBPF30c)
 
 ## Photo
